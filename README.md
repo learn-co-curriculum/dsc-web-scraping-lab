@@ -40,7 +40,7 @@ def retrieve_titles(soup):
 
 ## Retrieve Ratings
 
-Next, write a similar function to retrieve the star ratings on a give page. Again, the function should take in the `soup` from the given html page and return a list of the star-ratings for the books. These star ratings should be formatted as integers.
+Next, write a similar function to retrieve the star ratings on a given page. Again, the function should take in the `soup` from the given html page and return a list of the star-ratings for the books. These star ratings should be formatted as integers.
 
 
 ```python
