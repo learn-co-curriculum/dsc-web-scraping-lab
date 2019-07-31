@@ -136,10 +136,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 ```
 
-## Level-Up: Write a new version of the script you just wrote. 
-
-If you used url hacking to generate each successive page url, instead write a function that retrieves the link from the `"next"` button at the bottom of the page. Conversely, if you already used this approach above, use URL-hacking (arguably the easier of the two methods in this case).
-
 
 ```python
 # __SOLUTION__ 
@@ -237,14 +233,14 @@ df.head()
 
 
 
+## Level-Up: Write a new version of the script you just wrote. 
+
+If you used url hacking to generate each successive page url, instead write a function that retrieves the link from the `"next"` button at the bottom of the page. Conversely, if you already used this approach above, use URL-hacking (arguably the easier of the two methods in this case).
+
 
 ```python
 #Your code here
 ```
-
-## Summary
-
-Well done! You just completed your first full web scraping project! You're ready to start harnessing the power of the web!
 
 
 ```python
@@ -356,6 +352,13 @@ df.head()
 
 ```python
 # __SOLUTION__ 
+# As you can see, this method actually returned messier data 
+# with a slew of repeats:
+```
+
+
+```python
+# __SOLUTION__ 
 len(df[df.duplicated()])
 ```
 
@@ -378,3 +381,7 @@ len(df[~df.duplicated()])
     1000
 
 
+
+## Summary
+
+Well done! You just completed your first full web scraping project! You're ready to start harnessing the power of the web!
