@@ -38,6 +38,17 @@ def retrieve_titles(soup):
     #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+def retrieve_titles(soup):
+    #Your code here
+    warning = soup.find('div', class_="alert alert-warning")
+    book_container = warning.nextSibling.nextSibling
+    titles = [h3.find('a').attrs['title'] for h3 in book_container.findAll('h3')]
+    return titles
+```
+
 ## Retrieve Ratings
 
 Next, write a similar function to retrieve the star ratings on a given page. Again, the function should take in the `soup` from the given html page and return a list of the star-ratings for the books. These star ratings should be formatted as integers.
@@ -46,6 +57,22 @@ Next, write a similar function to retrieve the star ratings on a given page. Aga
 ```python
 def retrieve_ratings(soup):
     #Your code here
+```
+
+
+```python
+# __SOLUTION__ 
+def retrieve_ratings(soup):
+    #Your code here
+    warning = soup.find('div', class_="alert alert-warning")
+    book_container = warning.nextSibling.nextSibling
+    star_dict = {'One': 1, 'Two': 2, 'Three':3, 'Four': 4, 'Five':5}
+    star_ratings = []
+    regex = re.compile("star-rating (.*)")
+    for p in book_container.findAll('p', {"class" : regex}):
+        star_ratings.append(p.attrs['class'][-1])
+    star_ratings = [star_dict[s] for s in star_ratings]
+    return star_ratings
 ```
 
 ## Retrieve Prices
@@ -58,6 +85,18 @@ def retrieve_prices(soup):
     #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+def retrieve_prices(soup):
+    #Your code here
+    warning = soup.find('div', class_="alert alert-warning")
+    book_container = warning.nextSibling.nextSibling
+    prices = [p.text for p in book_container.findAll('p', class_="price_color")]
+    prices = [float(p[1:]) for p in prices] #Removing the pound sign and converting to float
+    return prices
+```
+
 ## Retrieve Availability
 
 Write a function to retrieve whether each book is available or not. The function should take in the `soup` from a given html page and return a list of the availability for each book.
@@ -66,6 +105,17 @@ Write a function to retrieve whether each book is available or not. The function
 ```python
 def retrieve_availabilities(soup):
     #Your code here
+```
+
+
+```python
+# __SOLUTION__ 
+def retrieve_availabilities(soup):
+    #Your code here
+    warning = soup.find('div', class_="alert alert-warning")
+    book_container = warning.nextSibling.nextSibling
+    avails = [a.text.strip() for a in book_container.findAll('p', class_="instock availability")]
+    return avails
 ```
 
 ## Create a Script to Retrieve All the Books From All 50 Pages
@@ -77,9 +127,115 @@ Finally, write a script to retrieve all of the information from all 50 pages of 
 #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+import re
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+```
+
 ## Level-Up: Write a new version of the script you just wrote. 
 
 If you used url hacking to generate each successive page url, instead write a function that retrieves the link from the `"next"` button at the bottom of the page. Conversely, if you already used this approach above, use URL-hacking (arguably the easier of the two methods in this case).
+
+
+```python
+# __SOLUTION__ 
+#Your code here
+titles = []
+star_ratings = []
+prices = []
+avails = []
+for i in range(1,51):
+    if i == 1:
+        url = 'http://books.toscrape.com/'
+    else:
+            url = "http://books.toscrape.com/catalogue/page-{}.html".format(i)
+    html_page = requests.get(url)
+    soup = BeautifulSoup(html_page.content, 'html.parser')
+    titles += retrieve_titles(soup)
+    star_ratings += retrieve_ratings(soup)
+    prices += retrieve_prices(soup)
+    avails += retrieve_availabilities(soup)
+df = pd.DataFrame([titles, star_ratings, prices, avails]).transpose()
+df.columns = ['Title', 'Star_Rating', 'Price_(pounds)', 'Availability']
+print(len(df))
+df.head()
+```
+
+    1000
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+      <th>Star_Rating</th>
+      <th>Price_(pounds)</th>
+      <th>Availability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A Light in the Attic</td>
+      <td>3</td>
+      <td>51.77</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Tipping the Velvet</td>
+      <td>1</td>
+      <td>53.74</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Soumission</td>
+      <td>1</td>
+      <td>50.1</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Sharp Objects</td>
+      <td>4</td>
+      <td>47.82</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sapiens: A Brief History of Humankind</td>
+      <td>5</td>
+      <td>54.23</td>
+      <td>In stock</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 
 ```python
@@ -89,3 +245,136 @@ If you used url hacking to generate each successive page url, instead write a fu
 ## Summary
 
 Well done! You just completed your first full web scraping project! You're ready to start harnessing the power of the web!
+
+
+```python
+# __SOLUTION__ 
+#Your code here
+def get_next_page(soup):
+    next_button = soup.find("li", class_="next") #May return none if on final page
+    if next_button:
+        return next_button.find('a').attrs['href']
+    else:
+        return None
+
+def parse_url(url, titles=[], star_ratings=[], prices=[], avails=[]):
+    html_page = requests.get(url)
+    soup = BeautifulSoup(html_page.content, 'html.parser')
+    titles += retrieve_titles(soup)
+    star_ratings += retrieve_ratings(soup)
+    prices += retrieve_prices(soup)
+    avails += retrieve_availabilities(soup)
+    next_url_ext = get_next_page(soup)
+    if next_url_ext:
+        next_url = '/'.join(url.split('/')[:-1])+'/' + next_url_ext
+        return parse_url(next_url, titles, star_ratings, prices, avails)
+    else:
+        return titles, star_ratings, prices, avails
+
+
+url = 'http://books.toscrape.com/'
+titles, star_ratings, prices, avails = parse_url(url, titles, star_ratings, prices, avails)
+
+df = pd.DataFrame([titles, star_ratings, prices, avails]).transpose()
+df.columns = ['Title', 'Star_Rating', 'Price_(pounds)', 'Availability']
+print(len(df))
+df.head()
+```
+
+    5280
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+      <th>Star_Rating</th>
+      <th>Price_(pounds)</th>
+      <th>Availability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A Light in the Attic</td>
+      <td>3</td>
+      <td>51.77</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Tipping the Velvet</td>
+      <td>1</td>
+      <td>53.74</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Soumission</td>
+      <td>1</td>
+      <td>50.1</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Sharp Objects</td>
+      <td>4</td>
+      <td>47.82</td>
+      <td>In stock</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sapiens: A Brief History of Humankind</td>
+      <td>5</td>
+      <td>54.23</td>
+      <td>In stock</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+# __SOLUTION__ 
+len(df[df.duplicated()])
+```
+
+
+
+
+    4280
+
+
+
+
+```python
+# __SOLUTION__ 
+len(df[~df.duplicated()])
+```
+
+
+
+
+    1000
+
+
