@@ -20,7 +20,6 @@ This lab will build upon the previous lesson. In the end, you'll look to write a
 df = pd.DataFrame()
 for i in range(2,51):
     url = "http://books.toscrape.com/catalogue/page-{}.html".format(i)
-    html_page = requests.get(url)
     soup = BeautifulSoup(html_page.content, 'html.parser')
     new_titles = retrieve_titles(soup)
     new_star_ratings = retrieve_ratings(soup)
@@ -31,7 +30,7 @@ for i in range(2,51):
 
 ## Retrieving Titles
 
-To start, write a function that extracts the titles of the books on a given page. The input for the function should be the soup for the HTML of the page.
+To start, write a function that extracts the titles of the books on a given page. The input for the function should be the `soup` for the HTML of the page.
 
 
 ```python
@@ -45,7 +44,7 @@ def retrieve_titles(soup):
 
 ## Retrieve Ratings
 
-Next, write a similar function to retrieve the star ratings on a given page. Again, the function should take in the `soup` from the given HTML page and return a list of the star-ratings for the books. These star ratings should be formatted as integers.
+Next, write a similar function to retrieve the star ratings on a given page. Again, the function should take in the `soup` from the given html page and return a list of the star-ratings for the books. These star ratings should be formatted as integers.
 
 
 ```python
@@ -309,7 +308,11 @@ df.head()
 
 
 
-As you can see, this method actually returned messier data with a slew of repeats:
+
+```python
+# As you can see, this method actually returned messier data 
+# with a slew of repeats:
+```
 
 
 ```python
