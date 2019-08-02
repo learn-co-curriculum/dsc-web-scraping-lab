@@ -277,7 +277,7 @@ print(len(df))
 df.head()
 ```
 
-    5280
+    2000
 
 
 
@@ -365,7 +365,7 @@ len(df[df.duplicated()])
 
 
 
-    4280
+    1000
 
 
 
