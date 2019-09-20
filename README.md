@@ -79,7 +79,7 @@ Finally, write a script to retrieve all of the information from all 50 pages of 
 
 ## Level-Up: Write a new version of the script you just wrote. 
 
-If you used url hacking to generate each successive page url, instead write a function that retrieves the link from the `"next"` button at the bottom of the page. Conversely, if you already used this approach above, use URL-hacking (arguably the easier of the two methods in this case).
+If you used URL hacking to generate each successive page URL, instead write a function that retrieves the link from the `"next"` button at the bottom of the page. Conversely, if you already used this approach above, use URL-hacking (arguably the easier of the two methods in this case).
 
 
 ```python
