@@ -9,8 +9,10 @@ Now that you've seen a more extensive example of developing a web scraping scrip
 
 You will be able to:
 
-* Write functions to parse specific information from a web page
-* Iterate over successive web pages in order to create a dataset
+* Navigate HTML documents using Beautiful Soup's children and sibling relations
+* Select specific elements from HTML using Beautiful Soup
+* Use regular expressions to extract items with a certain pattern within Beautiful Soup
+* Determine the pagination scheme of a website and scrape multiple pages
 
 ## Lab Overview
 
@@ -40,7 +42,7 @@ def retrieve_titles(soup):
 
 ## Retrieve Ratings
 
-Next, write a similar function to retrieve the star ratings on a given page. Again, the function should take in the `soup` from the given html page and return a list of the star-ratings for the books. These star ratings should be formatted as integers.
+Next, write a similar function to retrieve the star ratings on a given page. Again, the function should take in the `soup` from the given HTML page and return a list of the star ratings for the books. These star ratings should be formatted as integers.
 
 
 ```python
