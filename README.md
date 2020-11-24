@@ -207,6 +207,11 @@ If you used URL hacking to generate each successive page URL, instead write a fu
 
 ```python
 #Your code here
+titles = []
+star_ratings = []
+prices = []
+avails = []
+
 def get_next_page(soup):
     next_button = soup.find("li", class_="next") #May return none if on final page
     if next_button:
@@ -307,37 +312,6 @@ df.head()
   </tbody>
 </table>
 </div>
-
-
-
-
-```python
-# As you can see, this method actually returned messier data 
-# with a slew of repeats:
-```
-
-
-```python
-len(df[df.duplicated()])
-```
-
-
-
-
-    1000
-
-
-
-
-```python
-len(df[~df.duplicated()])
-```
-
-
-
-
-    1000
-
 
 
 ## Summary
